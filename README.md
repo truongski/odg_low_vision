@@ -16,8 +16,6 @@ Java SDK 1.8
 
 ### Contact
 
-`
-Alexander Truong
-
-alexctruong@gmail.com
-`
+	Alexander Truong
+	
+	alexctruong@gmail.com

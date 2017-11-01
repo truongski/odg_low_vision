@@ -10,12 +10,11 @@ This will be used to test various features that may be beneficial for low vision
 
 ### Dependencies ###
 
-Unity 2017.1 or 2017.2
-Android SDK
-Java SDK 1.8
+* Unity 2017.1 or 2017.2
+* Android SDK
+* Java SDK 1.8
 
 ### Contact
 
 	Alexander Truong
-	
 	alexctruong@gmail.com

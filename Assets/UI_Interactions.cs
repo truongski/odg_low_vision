@@ -6,7 +6,7 @@ public class UI_Interactions : MonoBehaviour {
 
 	public Transform viewCameraTransform;
 	public float sensitivity = 0.5f;
-
+	public GameObject menu;
 	// Use this for initialization
 	void Start () {
 		
@@ -34,5 +34,9 @@ public class UI_Interactions : MonoBehaviour {
 	public void NavigateY(float y){
 		Vector3 up = viewCameraTransform.up * y;
 		this.transform.position += up;
+	}
+
+	public void ToggelMenu(bool toggle){
+		menu.SetActive (toggle);
 	}
 }

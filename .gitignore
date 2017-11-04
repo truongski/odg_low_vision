@@ -7,3 +7,5 @@ Library/
 
 *.sln
 *.csproj
+Project.userprefs
+.vs/

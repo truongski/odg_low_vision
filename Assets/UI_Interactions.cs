@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UI_Interactions : MonoBehaviour {
 
+	public Transform viewCameraTransform;
 	public float sensitivity = 0.5f;
 
 	// Use this for initialization
@@ -17,21 +18,21 @@ public class UI_Interactions : MonoBehaviour {
 	}
 
 	public void zoomIn(){
-		Vector3 forward = this.transform.parent.transform.forward + new Vector3(0, 0, 2);
+		Vector3 forward = viewCameraTransform.transform.forward * 1;
 		this.transform.position += forward;
 	}
 
 	public void zoomOut(){
-		Vector3 forward = this.transform.parent.transform.forward + new Vector3(0, 0, -2);
+		Vector3 forward = viewCameraTransform.transform.forward * -1;
 		this.transform.position += forward;
 	}
 
 	public void NavigateX(float x){
-		Vector3 forward = this.transform.forward + new Vector3(x,0,0);
-		this.transform.position += forward;
+		Vector3 right = viewCameraTransform.right * x;
+		this.transform.position += right;
 	}
 	public void NavigateY(float y){
-		Vector3 forward = this.transform.forward + new Vector3(0,y,0);
-		this.transform.position += forward;
+		Vector3 up = viewCameraTransform.up * y;
+		this.transform.position += up;
 	}
 }

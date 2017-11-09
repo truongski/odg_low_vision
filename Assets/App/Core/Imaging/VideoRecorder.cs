@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
@@ -16,6 +18,10 @@ namespace App.Core.Imaging
 
         private Rect rect;
 
+        private UdpClient sender;
+        private IPEndPoint sendTo;
+        public string hostOrAddress;
+        public int port;
         private int state = 0;
 
         public string path;
@@ -30,6 +36,8 @@ namespace App.Core.Imaging
             rt = new RenderTexture(256, 256, 24);
 
             rect = new Rect(0, 0, 256, 256);
+            sender = new UdpClient();
+            sendTo = new IPEndPoint(IPAddress.Parse(hostOrAddress), port);
 
             if (!Directory.Exists(path))
             {
@@ -41,27 +49,34 @@ namespace App.Core.Imaging
 
         private void Update()
         {
-            if (frameCount > maxFrameCount)
-            {
-                return;
-            }
-
             fps = frameCount / (Time.time - startTime);
 
             if (state == 0)
             {
+                RenderTexture oldTex = targetCamera.targetTexture;
+                Rect oldRect = targetCamera.rect;
                 targetCamera.targetTexture = rt;
+                targetCamera.rect = new Rect(0, 0, 1, 1);
                 targetCamera.Render();
 
                 RenderTexture.active = rt;
                 tex.ReadPixels(rect, 0, 0);
+                targetCamera.targetTexture = oldTex;
+                targetCamera.rect = oldRect;
                 state = 1;
             }
             else if (state == 1)
             {
-                SaveFrame(tex);
+                SendFrame(tex);
+                frameCount++;
                 state = 0;
             }
+        }
+
+        private void SendFrame(Texture2D texture)
+        {
+            byte[] jpg = tex.EncodeToJPG(80);
+            sender.Send(jpg, jpg.Length, sendTo);
         }
 
         private void SaveFrame(Texture2D tex)
@@ -70,7 +85,6 @@ namespace App.Core.Imaging
             {
                 byte[] jpg = tex.EncodeToJPG(80);
                 fs.Write(jpg, 0, jpg.Length);
-                frameCount++;
             }
         }
     }

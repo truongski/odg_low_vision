@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,16 +10,50 @@ namespace App.Streaming
         [SerializeField]
         private RawImage targetImage;
         private UdpJpegReceiver receiver;
-
+        private Queue<Action> actionQueue;
+        public int listenPort;
+        private object actionLock = new object();
         private void Start()
         {
-            receiver = new UdpJpegReceiver(1500);
+            actionQueue = new Queue<Action>();
+            receiver = new UdpJpegReceiver(listenPort);
             targetImage.texture = new Texture2D(256, 256);
+            receiver.onDataReceived += OnDataReceive;
         }
 
         private void OnDataReceive(byte[] data)
         {
-            (targetImage.texture as Texture2D).LoadImage(data);
+            lock (actionLock)
+            {
+                if (actionQueue.Count < 10)
+                {
+                    actionQueue.Enqueue(() =>
+                    {
+                        (targetImage.texture as Texture2D).LoadImage(data);
+                    });
+                }
+                else
+                {
+                    actionQueue.Clear();
+                }
+            }
+        }
+
+        private void Update()
+        {
+            lock (actionLock)
+            {
+                Action action = null;
+                if (actionQueue.Count > 0)
+                {
+                    action = actionQueue.Dequeue();
+                }
+
+                if (action != null)
+                {
+                    action();
+                }
+            }
         }
 
         private void OnDestroy()

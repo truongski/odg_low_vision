@@ -26,7 +26,6 @@ namespace App.Streaming
         private void ReceiveTask()
         {
             listenSocket = new UdpClient(listenPort);
-            listenSocket.Client.ReceiveTimeout = 1000;
             IPEndPoint listenEP = new IPEndPoint(IPAddress.Any, listenPort);
             running = true;
             while (running)
@@ -44,6 +43,7 @@ namespace App.Streaming
                 }
                 catch (SocketException ex)
                 {
+                    Debug.LogException(ex);
                     // timeout
                 }
             }

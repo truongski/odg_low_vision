@@ -9,5 +9,5 @@ EditorBuildSettings:
     path: Assets/ODG/Scene/SampleScene.unity
     guid: f3a13bfeba1644031b0660e9f8456c33
   - enabled: 1
-    path: Assets/ODG/Scene/Camera.unity
+    path: Assets/App/Scenes/Camera.unity
     guid: f92486bc92f64a445857eb2c7df0d471

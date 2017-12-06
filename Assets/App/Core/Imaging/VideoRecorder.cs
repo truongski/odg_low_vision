@@ -13,6 +13,8 @@ namespace App.Core.Imaging
     {
         [SerializeField]
         private Camera targetCamera;
+        [SerializeField]
+        private Camera[] targetCameras;
         private Texture2D tex;
         private RenderTexture rt;
 
@@ -32,10 +34,10 @@ namespace App.Core.Imaging
 
         private void Start()
         {
-            tex = new Texture2D(256, 256);
-            rt = new RenderTexture(256, 256, 24);
+            tex = new Texture2D(640, 480);
+            rt = new RenderTexture(640, 480, 24);
 
-            rect = new Rect(0, 0, 256, 256);
+            rect = new Rect(0, 0, 640, 480);
             sender = new UdpClient();
             sendTo = new IPEndPoint(IPAddress.Parse(hostOrAddress), port);
 
@@ -53,16 +55,20 @@ namespace App.Core.Imaging
 
             if (state == 0)
             {
-                RenderTexture oldTex = targetCamera.targetTexture;
-                Rect oldRect = targetCamera.rect;
-                targetCamera.targetTexture = rt;
-                targetCamera.rect = new Rect(0, 0, 1, 1);
-                targetCamera.Render();
+                for (int i = 0; i < targetCameras.Length; i++)
+                {
+                    RenderTexture oldTex = targetCameras[i].targetTexture;
+                    Rect oldRect = targetCameras[i].rect;
+                    targetCameras[i].targetTexture = rt;
+                    targetCameras[i].rect = new Rect(0, 0, 1, 1);
+                    targetCameras[i].Render();
 
-                RenderTexture.active = rt;
-                tex.ReadPixels(rect, 0, 0);
-                targetCamera.targetTexture = oldTex;
-                targetCamera.rect = oldRect;
+                    RenderTexture.active = rt;
+                    tex.ReadPixels(rect, 0, 0);
+                    targetCameras[i].targetTexture = oldTex;
+                    targetCameras[i].rect = oldRect;
+                }
+
                 state = 1;
             }
             else if (state == 1)
@@ -75,7 +81,7 @@ namespace App.Core.Imaging
 
         private void SendFrame(Texture2D texture)
         {
-            byte[] jpg = tex.EncodeToJPG(80);
+            byte[] jpg = tex.EncodeToJPG(60);
             sender.Send(jpg, jpg.Length, sendTo);
         }
 

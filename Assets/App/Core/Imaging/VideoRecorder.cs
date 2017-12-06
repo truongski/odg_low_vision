@@ -12,9 +12,11 @@ namespace App.Core.Imaging
     public class VideoRecorder : MonoBehaviour
     {
         [SerializeField]
-        private Camera targetCamera;
-        [SerializeField]
         private Camera[] targetCameras;
+        [SerializeField]
+        private int width = 320;
+        [SerializeField]
+        private int height = 240;
         private Texture2D tex;
         private RenderTexture rt;
 
@@ -34,10 +36,10 @@ namespace App.Core.Imaging
 
         private void Start()
         {
-            tex = new Texture2D(640, 480);
-            rt = new RenderTexture(640, 480, 24);
+            tex = new Texture2D(width, height);
+            rt = new RenderTexture(width, height, 24);
 
-            rect = new Rect(0, 0, 640, 480);
+            rect = new Rect(0, 0, width, height);
             sender = new UdpClient();
             sendTo = new IPEndPoint(IPAddress.Parse(hostOrAddress), port);
 

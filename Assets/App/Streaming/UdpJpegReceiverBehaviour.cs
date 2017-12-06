@@ -17,7 +17,7 @@ namespace App.Streaming
         {
             actionQueue = new Queue<Action>();
             receiver = new UdpJpegReceiver(listenPort);
-            targetImage.texture = new Texture2D(800, 600);
+            targetImage.texture = new Texture2D(640, 480);
             receiver.onDataReceived += OnDataReceive;
         }
 

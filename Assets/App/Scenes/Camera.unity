@@ -152,18 +152,19 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 473401226}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f78d1400a85dbb4497852882a986b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetCamera: {fileID: 1650360669}
   targetCameras:
   - {fileID: 1650360669}
   - {fileID: 2054543836}
   - {fileID: 1569653173}
   - {fileID: 633551046}
-  hostOrAddress: 127.0.0.1
+  width: 320
+  height: 240
+  hostOrAddress: 192.168.43.10
   port: 1500
   path: C:/Temp/Recording
   maxFrameCount: 20
@@ -559,7 +560,7 @@ Light:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1460711608}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
